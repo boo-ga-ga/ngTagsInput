@@ -417,6 +417,11 @@ tagsInput.directive('tagsInput', function($timeout, $document, $window, $q, tags
                         return;
                     }
 
+                    if ((event.key==',') && (options.addOnComma)){
+                      options.addOnComma = true;
+                    } else {
+                      options.addOnComma = false;
+                    }
                     addKeys[KEYS.enter] = options.addOnEnter;
                     addKeys[KEYS.comma] = options.addOnComma;
                     addKeys[KEYS.space] = options.addOnSpace;
