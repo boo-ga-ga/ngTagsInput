@@ -442,15 +442,17 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
                         addKeys = {},
                         shouldAdd, shouldRemove, shouldSelect, shouldEditLastTag;
 
-                    if (tiUtil.isModifierOn(event) || hotkeys.indexOf(key) === -1) {
+                    if (((tiUtil.isModifierOn(event) || hotkeys.indexOf(key) === -1)) && (event.key != ',')) {
                         return;
                     }
-
-                    if ((event.key==',') && (options.addOnComma)){
+                    
+                    if (event.key == ',') {
                       options.addOnComma = true;
                     } else {
                       options.addOnComma = false;
                     }
+
+                   
                     addKeys[KEYS.enter] = options.addOnEnter;
                     addKeys[KEYS.comma] = options.addOnComma;
                     addKeys[KEYS.space] = options.addOnSpace;
