@@ -63,13 +63,13 @@ describe('tags-input directive', function() {
         return element.find('input');
     }
 
-    function newTag(tag, key) {
-        key = key || KEYS.enter;
+    function newTag(tag, keyCode, key) {
+        keyCode = keyCode || KEYS.enter;
 
         for(var i = 0; i < tag.length; i++) {
             sendKeyPress(tag.charCodeAt(i));
         }
-        sendKeyDown(key);
+        sendKeyDown(keyCode, {}, key);
     }
 
     function sendKeyPress(charCode) {
@@ -82,8 +82,8 @@ describe('tags-input directive', function() {
         }
     }
 
-    function sendKeyDown(keyCode, properties) {
-        var event = jQuery.Event('keydown', angular.extend({ keyCode: keyCode }, properties || {}));
+    function sendKeyDown(keyCode, properties, key) {
+        var event = jQuery.Event('keydown', angular.extend({ keyCode: keyCode, key: key }, properties || {}));
         getInput().trigger(event);
 
         return event;
@@ -552,7 +552,18 @@ describe('tags-input directive', function() {
             compile('add-on-comma="true"');
 
             // Act
-            newTag('foo', KEYS.comma);
+            newTag('foo', KEYS.comma, ',');
+
+            // Assert
+            expect($scope.tags).toEqual([{ text: 'foo' }]);
+        });
+
+        it('adds a new tag when the comma key with another keycode is pressed and the option is true', function() {
+            // Arrange
+            compile('add-on-comma="true"');
+
+            // Act
+            newTag('foo', 191, ',');
 
             // Assert
             expect($scope.tags).toEqual([{ text: 'foo' }]);
@@ -2174,9 +2185,9 @@ describe('tags-input directive', function() {
         });
 
         describe('modifier key is off', function() {
-            it('prevents enter, comma and space keys from being propagated when all modifiers are up', function() {
+            it('prevents enter and space keys from being propagated when all modifiers are up', function() {
                 // Arrange
-                hotkeys = [KEYS.enter, KEYS.comma, KEYS.space];
+                hotkeys = [KEYS.enter, KEYS.space];
 
                 // Act/Assert
                 angular.forEach(hotkeys, function(key) {
@@ -2187,6 +2198,16 @@ describe('tags-input directive', function() {
                         metaKey: false
                     }).isDefaultPrevented()).toBe(true);
                 });
+            });
+
+            it('prevents comma key from being propagated when all modifiers are up', function() {
+                // Act/Assert
+                expect(sendKeyDown(KEYS.comma, {
+                    shiftKey: false,
+                    ctrlKey: false,
+                    altKey: false,
+                    metaKey: false
+                }, ',').isDefaultPrevented()).toBe(true);
             });
 
             it('prevents the backspace key from being propagated when all modifiers are up', function() {
