@@ -417,16 +417,15 @@ tagsInput.directive('tagsInput', function($timeout, $document, $window, $q, tags
                         return;
                     }
 
+                    var shouldAddOnComma = false;
                     if (event.key === ',' && options.addOnComma) {
-                      options.addOnComma = true;
-                    } else {
-                      options.addOnComma = false;
+                        shouldAddOnComma = true;
                     }
+
                     addKeys[KEYS.enter] = options.addOnEnter;
-                    addKeys[KEYS.comma] = options.addOnComma;
                     addKeys[KEYS.space] = options.addOnSpace;
 
-                    shouldAdd = !options.addFromAutocompleteOnly && (addKeys[key] || event.key === ',' && options.addOnComma);
+                    shouldAdd = !options.addFromAutocompleteOnly && (addKeys[key] || shouldAddOnComma);
                     shouldRemove = (key === KEYS.backspace || key === KEYS.delete) && tagList.selected;
                     shouldEditLastTag = key === KEYS.backspace && scope.newTag.text().length === 0 && options.enableEditingLastTag;
                     shouldSelect = (key === KEYS.backspace || key === KEYS.left || key === KEYS.right) && scope.newTag.text().length === 0 && !options.enableEditingLastTag;
