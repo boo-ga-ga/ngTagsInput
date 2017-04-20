@@ -413,12 +413,12 @@ tagsInput.directive('tagsInput', function($timeout, $document, $window, $q, tags
                         addKeys = {},
                         shouldAdd, shouldRemove, shouldSelect, shouldEditLastTag;
 
-                    if (((tiUtil.isModifierOn(event) || hotkeys.indexOf(key) === -1)) && event.key !== ',') {
+                    if (((tiUtil.isModifierOn(event) || hotkeys.indexOf(key) === -1)) && event.key !== ',' && event.char !== ',') {
                         return;
                     }
 
                     var shouldAddOnComma = false;
-                    if (event.key === ',' && options.addOnComma) {
+                    if ((event.key === ',' || event.char === ',') && options.addOnComma) {
                         shouldAddOnComma = true;
                     }
 

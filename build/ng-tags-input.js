@@ -5,7 +5,7 @@
  * Copyright (c) 2013-2017 Michael Benford
  * License: MIT
  *
- * Generated at 2017-04-18 14:44:30 +0300
+ * Generated at 2017-04-20 14:03:26 +0300
  */
 (function() {
 'use strict';
@@ -448,12 +448,12 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
                         addKeys = {},
                         shouldAdd, shouldRemove, shouldSelect, shouldEditLastTag;
 
-                    if (((tiUtil.isModifierOn(event) || hotkeys.indexOf(key) === -1)) && event.key !== ',') {
+                    if (((tiUtil.isModifierOn(event) || hotkeys.indexOf(key) === -1)) && event.key !== ',' && event.char !== ',') {
                         return;
                     }
 
                     var shouldAddOnComma = false;
-                    if (event.key === ',' && options.addOnComma) {
+                    if ((event.key === ',' || event.char === ',') && options.addOnComma) {
                         shouldAddOnComma = true;
                     }
 
